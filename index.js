@@ -24,7 +24,7 @@
 import express from "express";
 import cors from "cors";
 
-mport { conn } from './connection.js';                   // <‑‑ updated path
+import { conn } from './connection.js';                   // <‑‑ updated path
 import latestRouter from "./latestRoutes/dataRoute.js";
 import userRouter from "./userRoutes/userRoutes.js";
 
