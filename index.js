@@ -24,7 +24,7 @@
 import express from "express";
 import cors from "cors";
 
-import { conn } from './connection.js';                   
+import { connectDB } from './connection.js';                   
 import latestRouter from "./latestRoutes/dataRoute.js";
 import userRouter from "./userRoutes/userRoutes.js";
 
