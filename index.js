@@ -67,7 +67,7 @@
 
 
 import express from 'express';
-import { conn } from './connection.js';
+import { connectDB } from './connection.js';  
 import latestRouter from './latestRoutes/dataRoute.js';
 import route from './userRoutes/userRoutes.js';
 
