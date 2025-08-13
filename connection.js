@@ -21,23 +21,35 @@
 //     throw err;
 //   }
 // }
-
+// connection.js
 import mongoose from "mongoose";
 import dotenv from "dotenv";
-
 dotenv.config();
 
-export async function connectDB() {
-  try {
-    await mongoose.connect(process.env.MONGODB_URL, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    });
-    console.log("✅ DB Connected Successfully..!!");
-  } catch (err) {
-    console.error("❌ MongoDB connection error:", err.message);
-    process.exit(1);
-  }
+let cached = global.mongoose;
+
+if (!cached) {
+  cached = global.mongoose = { conn: null, promise: null };
 }
 
+export async function connectDB() {
+  if (cached.conn) return cached.conn;
+
+  if (!cached.promise) {
+    cached.promise = mongoose.connect(process.env.MONGODB_URL, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+      serverSelectionTimeoutMS: 30000, // handle Atlas cold start
+    }).then((mongoose) => {
+      console.log("✅ MongoDB connected");
+      return mongoose;
+    }).catch((err) => {
+      console.error("❌ MongoDB connection error:", err.message);
+      throw err;
+    });
+  }
+
+  cached.conn = await cached.promise;
+  return cached.conn;
+}
 
