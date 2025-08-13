@@ -1,43 +1,34 @@
+
+
 // import mongoose from "mongoose";
 
-// let isConnected = false; // Track connection status
+// let isConnected = 0;
 
-// export const conn = async () => {
-//   if (isConnected) return;
+// export async function connectDB() {
+//   if (isConnected === 1) return;
 
 //   try {
 //     const db = await mongoose.connect(process.env.MONGODB_URL, {
 //       useNewUrlParser: true,
 //       useUnifiedTopology: true,
-//       serverSelectionTimeoutMS: 5000, // optional: quicker fail
+//       serverSelectionTimeoutMS: 5000,
 //     });
 
 //     isConnected = db.connections[0].readyState;
 //     console.log("✅ MongoDB connected");
-//   } catch (error) {
-//     console.error("❌ MongoDB connection error:", error);
-//     throw error;
+//   } catch (err) {
+//     console.error("❌ MongoDB connection error:", err.message);
+//     throw err;
 //   }
-// };
+// }
+
+
 
 import mongoose from "mongoose";
+import dotenv from 'dotenv'
+dotenv.config()
 
-let isConnected = 0;
+export const conn =  mongoose.connect(process.env.MONGODB_URL).then((res)=>{
+    console.log("DB Connected Successfully..!!")
+}) 
 
-export async function connectDB() {
-  if (isConnected === 1) return;
-
-  try {
-    const db = await mongoose.connect(process.env.MONGODB_URL, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-      serverSelectionTimeoutMS: 5000,
-    });
-
-    isConnected = db.connections[0].readyState;
-    console.log("✅ MongoDB connected");
-  } catch (err) {
-    console.error("❌ MongoDB connection error:", err.message);
-    throw err;
-  }
-}
