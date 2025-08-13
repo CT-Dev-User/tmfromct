@@ -22,13 +22,22 @@
 //   }
 // }
 
-
-
 import mongoose from "mongoose";
-import dotenv from 'dotenv'
-dotenv.config()
+import dotenv from "dotenv";
 
-export const db =  mongoose.connect(process.env.MONGODB_URL).then((res)=>{
-    console.log("DB Connected Successfully..!!")
-}) 
+dotenv.config();
+
+export async function connectDB() {
+  try {
+    await mongoose.connect(process.env.MONGODB_URL, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    });
+    console.log("✅ DB Connected Successfully..!!");
+  } catch (err) {
+    console.error("❌ MongoDB connection error:", err.message);
+    process.exit(1);
+  }
+}
+
 
